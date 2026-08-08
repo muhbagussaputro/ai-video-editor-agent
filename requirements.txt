@@ -1,0 +1,17 @@
+fastapi==0.115.8
+uvicorn[standard]==0.34.0
+redis==5.2.1
+python-multipart==0.0.20
+pydantic==2.10.6
+httpx==0.27.2
+requests==2.32.3
+opencv-python-headless==4.11.0.86
+mediapipe==0.10.14
+faster-whisper==1.1.1
+# Modern YouTube player extraction (Node 20 is installed in the runtime image).
+# Keep curl-cffi in yt-dlp's supported range for browser impersonation.
+# PyPI 2025.12.08 cannot solve YouTube player 882a803a's current n challenge.
+# Track upstream yt-dlp until the next PyPI release contains the extractor repair.
+yt-dlp @ git+https://github.com/yt-dlp/yt-dlp.git
+youtube-transcript-api==0.6.2
+curl-cffi>=0.7.0,<0.14.0

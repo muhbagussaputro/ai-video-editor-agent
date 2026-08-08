@@ -1,0 +1,39 @@
+{
+  "version": 1,
+  "canvas": "1080x1920",
+  "highlight_duration_policy": {
+    "mode": "context-first",
+    "target_seconds": 30,
+    "minimum_seconds": 8,
+    "maximum_seconds": 150,
+    "never_force_target_duration": true,
+    "rule": "End at a natural sentence or topic boundary after one complete idea; use the grounded quote duration unless it is shorter than the minimum."
+  },
+  "adaptive_scene_switching": {
+    "enabled": true,
+    "transition": "zoomin",
+    "transition_seconds": 0.15,
+    "face_mode": {
+      "aspect": "9:16",
+      "strategy": "face-aware full-height crop",
+      "transcript_anchor": {"alignment": "an7", "x": 108, "y": 1284}
+    },
+    "presentation_mode": {
+      "aspect": "4:3",
+      "strategy": "center crop 16:9 source to 4:3; fit 1080x810",
+      "position": {"x": 0, "y": 250},
+      "transcript_anchor": {"alignment": "an7", "x": 108, "y": 1080}
+    }
+  },
+  "persistent_pov": {
+    "enabled": true,
+    "alignment": "an8",
+    "position": {"x": 540, "y": 1540},
+    "font": "Montserrat ExtraBold",
+    "font_size": 66,
+    "accent_color": "#FF00B0",
+    "handle": "@gusaja.com",
+    "handle_font_size": 32,
+    "handle_is_part_of_pov_block": true
+  }
+}

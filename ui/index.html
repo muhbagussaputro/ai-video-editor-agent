@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Video Clipper</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .loader {
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #3498db;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            animation: spin 1s linear infinite;
+            display: inline-block;
+            vertical-align: middle;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body class="bg-gray-100 min-h-screen text-gray-800 font-sans">
+    <div class="max-w-4xl mx-auto py-10 px-4">
+        <header class="mb-8 text-center">
+            <h1 class="text-3xl font-bold text-blue-600 mb-2">AI Video Clipper</h1>
+            <p class="text-gray-600">Pilih momen viral dari YouTube secara otonom.</p>
+        </header>
+
+        <!-- Input Section -->
+        <div class="bg-white rounded-lg shadow-md p-6 mb-8">
+            <form id="jobForm" class="space-y-4">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">YouTube URL</label>
+                    <input type="url" id="youtube_url" required placeholder="https://www.youtube.com/watch?v=..." 
+                           class="w-full px-4 py-2 border rounded-md focus:ring-blue-500 focus:border-blue-500">
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Target Durasi Minimal (detik)</label>
+                        <input type="number" id="target_duration_min" value="15" min="5" max="120"
+                               class="w-full px-4 py-2 border rounded-md focus:ring-blue-500 focus:border-blue-500">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Target Durasi Maksimal (detik)</label>
+                        <input type="number" id="target_duration_max" value="60" min="15" max="120"
+                               class="w-full px-4 py-2 border rounded-md focus:ring-blue-500 focus:border-blue-500">
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Durasi Ideal (detik)</label>
+                        <input type="number" id="target_duration" value="45" min="10" max="120"
+                               class="w-full px-4 py-2 border rounded-md focus:ring-blue-500 focus:border-blue-500">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Jumlah Kandidat Highlight</label>
+                        <input type="number" id="highlight_count" value="8" min="1" max="20"
+                               class="w-full px-4 py-2 border rounded-md focus:ring-blue-500 focus:border-blue-500">
+                    </div>
+                </div>
+
+                <div class="pt-2">
+                    <button type="submit" id="submitBtn" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-4 rounded-md transition duration-200 flex items-center justify-center gap-2">
+                        <span>Buat Klip Sekarang</span>
+                    </button>
+                </div>
+            </form>
+        </div>
+
+        <!-- History Section -->
+        <div id="historySection" class="bg-white rounded-lg shadow-md p-6 mb-8 hidden">
+            <h2 class="text-xl font-bold mb-4">Riwayat Job Terakhir</h2>
+            <ul id="historyList" class="space-y-2 text-sm"></ul>
+        </div>
+
+        <!-- Status Section -->
+        <div id="statusSection" class="bg-white rounded-lg shadow-md p-6 mb-8 hidden">
+            <div class="flex justify-between items-center mb-4">
+                <h2 class="text-xl font-bold">Status Job</h2>
+                <span id="jobStatus" class="px-3 py-1 rounded-full text-sm font-medium bg-gray-200 text-gray-800">Menyiapkan...</span>
+            </div>
+            
+            <div class="space-y-2 mb-4 text-sm">
+                <p><span class="font-semibold">ID:</span> <span id="jobIdDisplay" class="font-mono text-xs"></span></p>
+                <p><span class="font-semibold">Stage:</span> <span id="jobStage" class="text-blue-600">Starting</span></p>
+                <p><span class="font-semibold">Detail:</span> <span id="jobDetail" class="text-gray-600">-</span></p>
+            </div>
+
+            <div id="errorBox" class="hidden bg-red-50 border-l-4 border-red-500 p-4 mb-4 text-red-700 text-sm">
+            </div>
+        </div>
+
+        <!-- Candidates Section -->
+        <div id="candidatesSection" class="hidden">
+            <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-4">
+                <div>
+                    <h2 class="text-2xl font-bold">Kandidat Klip (<span id="builtCount">0</span>/<span id="totalCandidates">0</span> Rendered)</h2>
+                    <p class="text-sm text-gray-600 mt-1">Pilih "Render Klip Ini" untuk me-render kandidat secara sekuensial.</p>
+                </div>
+                <div class="mt-4 md:mt-0">
+                    <button id="btnRenderAll" onclick="renderSemua()" class="px-5 py-2 bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded shadow-sm flex items-center gap-2 transition disabled:opacity-50 disabled:cursor-not-allowed">
+                        <span>Render Semua Sisa Klip</span>
+                    </button>
+                </div>
+            </div>
+            
+            <div id="candidatesList" class="space-y-4">
+                <!-- Cards will be injected here -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const form = document.getElementById('jobForm');
+        const submitBtn = document.getElementById('submitBtn');
+        const statusSection = document.getElementById('statusSection');
+        const candidatesSection = document.getElementById('candidatesSection');
+        const candidatesList = document.getElementById('candidatesList');
+        
+        let currentJobId = null;
+        let pollInterval = null;
+
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const youtube_url = document.getElementById('youtube_url').value;
+            const target_duration = document.getElementById('target_duration').value;
+            const target_duration_min = document.getElementById('target_duration_min').value;
+            const target_duration_max = document.getElementById('target_duration_max').value;
+            const highlight_count = document.getElementById('highlight_count').value;
+
+            // Reset UI
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<div class="loader"></div><span>Memproses...</span>';
+            statusSection.classList.remove('hidden');
+            candidatesSection.classList.add('hidden');
+            document.getElementById('errorBox').classList.add('hidden');
+            updateStatusBadge('queued', 'bg-yellow-100 text-yellow-800');
+            
+            try {
+                const formData = new FormData();
+                formData.append('youtube_url', youtube_url);
+                formData.append('target_duration', target_duration);
+                formData.append('target_duration_min', target_duration_min);
+                formData.append('target_duration_max', target_duration_max);
+                formData.append('highlight_count', highlight_count);
+                formData.append('prefer_youtube_transcript', 'true');
+                formData.append('build_mode', 'first_only'); // Review mode
+
+                const res = await fetch('/jobs', {
+                    method: 'POST',
+                    body: formData
+                });
+                
+                if (!res.ok) throw new Error(await res.text());
+                
+                const data = await res.json();
+                currentJobId = data.job_id;
+                document.getElementById('jobIdDisplay').textContent = currentJobId;
+                
+                saveJobToHistory(currentJobId, youtube_url);
+                startPolling();
+                
+            } catch (err) {
+                showError("Gagal submit job: " + err.message);
+                resetSubmitBtn();
+            }
+        });
+
+        function startPolling() {
+            if (pollInterval) clearInterval(pollInterval);
+            pollInterval = setInterval(pollJob, 3000);
+            pollJob();
+        }
+
+        let lastKnownStatus = '';
+
+        async function pollJob() {
+            if (!currentJobId) return;
+            
+            try {
+                // Tambahkan cache: 'no-store' agar browser tidak me-return status lama yang nyangkut di cache
+                const res = await fetch(`/jobs/${currentJobId}`, { cache: 'no-store' });
+                if (!res.ok) throw new Error("Gagal mengambil status job");
+                
+                const data = await res.json();
+                
+                // Cek status saat ini di UI vs data baru
+                const currentStatus = document.getElementById('jobStatus').textContent.toLowerCase();
+                const newStatus = data.status || 'unknown';
+                lastKnownStatus = newStatus;
+                
+                // Update text
+                document.getElementById('jobStage').textContent = data.progress_stage || "processing";
+                document.getElementById('jobDetail').textContent = data.progress_detail || "-";
+                
+                // Update badge color
+                if (newStatus === 'completed') {
+                    updateStatusBadge(newStatus, 'bg-green-100 text-green-800');
+                    if (currentStatus !== 'completed' || currentStatus === 'memuat...') {
+                        loadCandidates(); // auto load output baru
+                    }
+                    clearInterval(pollInterval);
+                    resetSubmitBtn();
+                } else if (newStatus === 'failed') {
+                    updateStatusBadge(newStatus, 'bg-red-100 text-red-800');
+                    showError(data.error || "Job gagal diproses.");
+                    clearInterval(pollInterval);
+                    resetSubmitBtn();
+                } else {
+                    updateStatusBadge(newStatus, 'bg-blue-100 text-blue-800');
+                    
+                    // Live update candidates if available (ingest phase 1 done)
+                    if (data.candidate_previews && data.candidate_previews.length > 0) {
+                        const builtCountText = document.getElementById('builtCount').textContent;
+                        const outputsCount = data.outputs ? data.outputs.length : 0;
+                        
+                        // Force refresh list jika count berubah atau status berubah menjadi idle/completed queue
+                        if (currentStatus === 'queued' || parseInt(builtCountText) !== outputsCount || lastKnownStatus !== currentStatus) {
+                            loadCandidates();
+                        }
+                    }
+                }
+                
+            } catch (err) {
+                console.error("Poll error:", err);
+            }
+        }
+
+        let isPollingCandidates = false;
+        let autoRenderAllMode = false;
+
+        async function loadCandidates() {
+            if (!currentJobId || isPollingCandidates) return;
+            isPollingCandidates = true;
+            
+            try {
+                // Hindari cache saat load candidates
+                const res = await fetch(`/jobs/${currentJobId}/candidates`, { cache: 'no-store' });
+                if (!res.ok) return;
+                
+                const data = await res.json();
+                const previews = data.candidate_previews || [];
+                const outputs = data.outputs || [];
+                
+                if (previews.length === 0) return;
+                
+                candidatesSection.classList.remove('hidden');
+                document.getElementById('totalCandidates').textContent = previews.length;
+                document.getElementById('builtCount').textContent = outputs.length;
+                
+                const builtRanks = outputs.map(o => o.rank);
+                let nextRankToBuild = data.next_rank;
+                
+                const btnRenderAll = document.getElementById('btnRenderAll');
+                if (outputs.length >= previews.length) {
+                    btnRenderAll.style.display = 'none';
+                    autoRenderAllMode = false;
+                } else {
+                    btnRenderAll.style.display = 'inline-flex';
+                    if (autoRenderAllMode) {
+                        btnRenderAll.innerHTML = `<div class="loader" style="width:14px; height:14px; border-width:2px;"></div> Memproses Semua...`;
+                        btnRenderAll.disabled = true;
+                        
+                        // Kalau lagi auto-render dan worker dalam kondisi idle (tunggu perintah), trigger rank selanjutnya otomatis
+                        if (lastKnownStatus !== 'processing' && lastKnownStatus !== 'queued') {
+                            setTimeout(() => {
+                                buildNext(nextRankToBuild);
+                            }, 1000);
+                        }
+                    } else {
+                        btnRenderAll.innerHTML = `<span>Render Semua Sisa Klip</span>`;
+                        btnRenderAll.disabled = false;
+                    }
+                }
+                
+                // Render HTML
+                candidatesList.innerHTML = '';
+                
+                previews.forEach(preview => {
+                    const rank = preview.rank;
+                    const isBuilt = builtRanks.includes(rank);
+                    const isNext = rank === nextRankToBuild;
+                    const outputData = outputs.find(o => o.rank === rank);
+                    
+                    const card = document.createElement('div');
+                    card.className = `p-5 rounded-lg border ${isBuilt ? 'bg-white border-green-200 shadow-sm' : 'bg-gray-50 border-gray-200'}`;
+                    
+                    let actionHtml = '';
+                    if (isBuilt) {
+                        actionHtml = `
+                            <div class="mt-4 flex gap-2">
+                                <a href="/jobs/${currentJobId}/artifact/video/${rank}" target="_blank" class="px-4 py-2 bg-green-600 text-white rounded text-sm font-medium hover:bg-green-700">Download MP4</a>
+                                <a href="/jobs/${currentJobId}/artifact/subtitles/${rank}" target="_blank" class="px-4 py-2 bg-gray-200 text-gray-800 rounded text-sm font-medium hover:bg-gray-300">Download ASS</a>
+                            </div>
+                        `;
+                    } else if (isNext) {
+                        if (lastKnownStatus === 'processing' || lastKnownStatus === 'queued') {
+                            actionHtml = `
+                                <div class="mt-4">
+                                    <button disabled class="px-4 py-2 bg-yellow-500 text-white rounded text-sm font-medium flex items-center gap-2">
+                                        <div class="loader" style="width:14px; height:14px; border-width:2px;"></div> Sedang Render...
+                                    </button>
+                                </div>
+                            `;
+                        } else {
+                            actionHtml = `
+                                <div class="mt-4">
+                                    <button onclick="buildNext(${rank})" class="px-4 py-2 bg-blue-600 text-white rounded text-sm font-medium hover:bg-blue-700" id="btn-build-${rank}">Render Klip Ini (Rank ${rank})</button>
+                                </div>
+                            `;
+                        }
+                    } else {
+                        actionHtml = `
+                            <div class="mt-4">
+                                <span class="text-xs text-gray-500 italic">Menunggu giliran (harus render rank sebelumnya dulu)</span>
+                            </div>
+                        `;
+                    }
+                    
+                    card.innerHTML = `
+                        <div class="flex justify-between items-start mb-2">
+                            <h3 class="font-bold text-lg">Rank ${rank}: ${preview.hook_text || "Highlight"}</h3>
+                            <span class="px-2 py-1 bg-blue-50 text-blue-700 rounded text-xs font-bold border border-blue-100">Score: ${preview.score}</span>
+                        </div>
+                        <p class="text-sm text-gray-700 italic mb-3">"${preview.highlight_quote}"</p>
+                        
+                        <div class="grid grid-cols-2 gap-4 text-xs mb-3">
+                            <div><span class="font-semibold text-gray-500">Style:</span> <span class="uppercase">${preview.clipper_style}</span></div>
+                            <div><span class="font-semibold text-gray-500">Alasan:</span> ${preview.reason}</div>
+                        </div>
+                        
+                        ${actionHtml}
+                    `;
+                    
+                    candidatesList.appendChild(card);
+                });
+                
+            } catch (err) {
+                console.error("Load candidates error:", err);
+            } finally {
+                isPollingCandidates = false;
+            }
+        }
+
+        window.buildNext = async function(rank) {
+            if (!currentJobId) return;
+            
+            try {
+                // Set the specific button to loading
+                const btn = document.getElementById(`btn-build-${rank}`);
+                if (btn) {
+                    btn.disabled = true;
+                    btn.innerHTML = `<div class="loader" style="width:14px; height:14px; border-width:2px;"></div> Sedang Render...`;
+                    btn.classList.replace('bg-blue-600', 'bg-yellow-500');
+                    btn.classList.replace('hover:bg-blue-700', 'cursor-not-allowed');
+                }
+                
+                const res = await fetch(`/jobs/${currentJobId}/build-next`, {
+                    method: 'POST'
+                });
+                
+                if (!res.ok) throw new Error(await res.text());
+                
+                // Restart polling
+                startPolling();
+                
+            } catch (err) {
+                alert("Gagal build next: " + err.message);
+                loadCandidates(); // reload UI to reset buttons
+            }
+        }
+
+        function updateStatusBadge(text, classes) {
+            const badge = document.getElementById('jobStatus');
+            badge.textContent = text.toUpperCase();
+            badge.className = `px-3 py-1 rounded-full text-sm font-medium ${classes}`;
+        }
+
+        function resetSubmitBtn() {
+            submitBtn.disabled = false;
+            submitBtn.innerHTML = '<span>Buat Klip Baru (Job Lain)</span>';
+        }
+
+        function showError(msg) {
+            const box = document.getElementById('errorBox');
+            box.textContent = msg;
+            box.classList.remove('hidden');
+        }
+
+        // --- Local Storage History ---
+        function saveJobToHistory(jobId, url) {
+            let history = JSON.parse(localStorage.getItem('clipper_history') || '[]');
+            history = history.filter(j => j.id !== jobId);
+            history.unshift({ id: jobId, url: url, date: new Date().toISOString() });
+            history = history.slice(0, 10); // Simpan 10 terakhir
+            localStorage.setItem('clipper_history', JSON.stringify(history));
+            localStorage.setItem('clipper_active_job', jobId);
+            renderHistory();
+        }
+
+        function renderHistory() {
+            const history = JSON.parse(localStorage.getItem('clipper_history') || '[]');
+            const historySection = document.getElementById('historySection');
+            const historyList = document.getElementById('historyList');
+            
+            if (history.length === 0) {
+                historySection.classList.add('hidden');
+                return;
+            }
+            
+            historySection.classList.remove('hidden');
+            historyList.innerHTML = '';
+            
+            history.forEach(job => {
+                const li = document.createElement('li');
+                li.className = "flex justify-between items-center p-3 bg-gray-50 rounded border hover:bg-gray-100 transition";
+                li.innerHTML = `
+                    <div class="truncate mr-4 flex-1">
+                        <span class="font-bold text-gray-700 font-mono">${job.id.substring(0,8)}...</span>
+                        <span class="text-gray-500 text-xs ml-2">${new Date(job.date).toLocaleString()}</span>
+                        <br>
+                        <a href="${job.url}" target="_blank" class="text-blue-500 hover:underline text-xs truncate block max-w-md">${job.url}</a>
+                    </div>
+                    <button onclick="resumeJob('${job.id}')" class="px-4 py-2 bg-white border border-gray-300 hover:bg-gray-50 text-gray-800 rounded text-xs font-semibold shadow-sm">Buka Status</button>
+                `;
+                historyList.appendChild(li);
+            });
+        }
+
+        window.renderSemua = function() {
+            if (!currentJobId) return;
+            autoRenderAllMode = true;
+            loadCandidates(); // Trigger UI refresh dan auto-click sequence-nya
+        }
+
+        window.resumeJob = function(jobId) {
+            currentJobId = jobId;
+            localStorage.setItem('clipper_active_job', jobId);
+            document.getElementById('jobIdDisplay').textContent = currentJobId;
+            
+            statusSection.classList.remove('hidden');
+            candidatesSection.classList.add('hidden');
+            document.getElementById('errorBox').classList.add('hidden');
+            updateStatusBadge('memuat...', 'bg-gray-200 text-gray-800');
+            
+            startPolling();
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            renderHistory();
+            const activeJob = localStorage.getItem('clipper_active_job');
+            if (activeJob) {
+                resumeJob(activeJob);
+            }
+        });
+    </script>
+</body>
+</html>

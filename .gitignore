@@ -1,0 +1,43 @@
+# Runtime secrets and local configuration
+.env
+.env.*
+!.env.example
+config/*.env
+config/*.env.*
+*.pem
+*.key
+
+# Job metadata, cached source/transcripts, and generated media
+-o/
+.rank-batch-*.json
+.tmp_style_ass/
+tmp/
+debug/
+*.mp4
+*.mkv
+*.webm
+*.mov
+*.ass
+
+# Python and local tooling
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.venv/
+venv/
+.DS_Store
+.idea/
+.vscode/
+
+# Logs
+*.log
+logs/
+/data/
+/cache/
+/work/
+/videos/
+
+# Editor / OS files
+*~
+*.swp
+.git/

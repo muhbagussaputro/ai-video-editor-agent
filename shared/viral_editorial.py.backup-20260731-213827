@@ -1,0 +1,169 @@
+from __future__ import annotations
+
+import json
+import re
+from typing import Any
+
+from shared.router_client import RouterClient
+from shared.settings import settings
+
+
+def _parse_json_object(content: str) -> dict[str, Any]:
+    try:
+        payload = json.loads(content)
+    except json.JSONDecodeError:
+        match = re.search(r"\{.*\}", content, flags=re.S)
+        if not match:
+            raise ValueError("Gemini editorial response was not valid JSON")
+        payload = json.loads(match.group(0))
+    if not isinstance(payload, dict):
+        raise ValueError("Gemini editorial response must be a JSON object")
+    return payload
+
+
+def analyze_viral_hooks(
+    router_client: RouterClient,
+    transcript_text: str,
+    *,
+    target_duration: float,
+    min_duration: float,
+    max_duration: float,
+    candidate_count: int,
+) -> dict[str, Any]:
+    """Create a persisted, transcript-grounded Gemini editorial brief.
+
+    Quotes are intentionally required verbatim so the renderer can map them back
+    to timestamped transcript segments deterministically.
+    """
+    prompt = f"""You are a rigorous Indonesian short-form viral editor. Analyze this
+verbatim YouTube transcript and identify the strongest standalone clips for TODAY's
+social-video audience. Do not invent facts or wording.
+
+Return ONLY valid JSON with keys: editorial_summary, candidates.
+`candidates` must be an array of up to {int(candidate_count)} objects. Each object
+must have: rank, highlight_quote, hook_text, reason, score, scroll_stop,
+curiosity_gap, specificity, tension, standalone_clarity, payoff, keywords_to_pop,
+clipper_style, style_reason, editing_notes, recommended_bgm.
+
+Rules:
+- highlight_quote MUST be copied verbatim from the transcript and contain enough
+  consecutive words to locate a clip. Do not rewrite it.
+- hook_text MUST NOT BE EMPTY. Generate a short, punchy, truthful on-screen headline, max 12 words. Do NOT leave this blank. Make it sound like a REAL TikTok/Reels creator wrote it. Use conversational Indonesian slang if appropriate. If using "POV:", make it highly relatable, sarcastic, or savage. STRICT RULE: DO NOT use any emojis or emoticons in the hook_text. No exceptions.
+- score and every rubric score are numbers from 0 to 100.
+- Favor a first 1-3 second scroll-stopper: concrete number, surprising claim,
+  pain, tension, risk, contrarian statement, or clear promised payoff.
+- Reject generic introductions, context that needs prior viewing, misleading
+  clickbait, and candidates without a payoff.
+- Candidates must cover different moments/ideas and not overlap semantically.
+- clipper_style must be one of: memes, pov, aura, motivasi.
+- Choose memes for funny/absurd/comedic moments; pov for relatable first-person, reaction, chat-style, or "POV" moments; aura for iconic/cool/legendary flex moments; motivasi for hard-hitting advice, aggression, discipline, money, facts, or mindset.
+- style_reason must explain why that style best fits the chosen quote.
+- editing_notes must be a short Indonesian editor brief describing text treatment, pacing, SFX, and visual energy.
+- recommended_bgm must be a short array of 1-3 music references suitable for that chosen style.
+- Final clip target is ~{int(target_duration)}s, allowed {int(min_duration)}-
+  {int(max_duration)}s after deterministic timestamp expansion.
+
+TRANSCRIPT:\n{transcript_text}"""
+    extra_payload: dict[str, Any] = {}
+    if settings.llm_reasoning_effort:
+        extra_payload["reasoning_effort"] = settings.llm_reasoning_effort
+        extra_payload["reasoning"] = {"effort": settings.llm_reasoning_effort}
+
+    content = router_client.chat(
+        [
+            {"role": "system", "content": "You return strict JSON and are grounded only in the supplied transcript."},
+            {"role": "user", "content": prompt},
+        ],
+        temperature=0.15,
+        response_format={"type": "json_object"},
+        extra_payload=extra_payload or None,
+    )
+    payload = _parse_json_object(content)
+    candidates = payload.get("candidates")
+    if not isinstance(candidates, list):
+        candidates = []
+    valid: list[dict[str, Any]] = []
+    for item in candidates:
+        if not isinstance(item, dict):
+            continue
+        quote = str(item.get("highlight_quote", "")).strip()
+        if not quote:
+            continue
+        valid.append(item)
+    payload["candidates"] = valid
+    payload["model"] = router_client.model
+    payload["analysis_mode"] = "viral_editorial_v2"
+    payload["reasoning_effort"] = settings.llm_reasoning_effort or ""
+    payload["reasoning_profile"] = (
+        f"/model {router_client.model} /reasoning {settings.llm_reasoning_effort}"
+        if settings.llm_reasoning_effort
+        else f"/model {router_client.model}"
+    )
+    return payload
+
+
+def editorial_candidate_previews(analysis: dict[str, Any]) -> list[dict[str, Any]]:
+    previews: list[dict[str, Any]] = []
+    for index, item in enumerate(analysis.get("candidates", []), start=1):
+        if not isinstance(item, dict):
+            continue
+        quote = str(item.get("highlight_quote", "")).strip()
+        if not quote:
+            continue
+        try:
+            score = float(item.get("score", 0))
+        except (TypeError, ValueError):
+            score = 0.0
+        recommended_bgm = item.get("recommended_bgm", [])
+        if not isinstance(recommended_bgm, list):
+            recommended_bgm = []
+        previews.append({
+            "rank": int(item.get("rank", index) or index),
+            "highlight_quote": quote,
+            "hook_text": str(item.get("hook_text", "")).strip(),
+            "reason": str(item.get("reason", "Gemini viral editorial selection.")).strip(),
+            "score": score,
+            "clipper_style": str(item.get("clipper_style", "")).strip().lower(),
+            "style_reason": str(item.get("style_reason", "")).strip(),
+            "editing_notes": str(item.get("editing_notes", "")).strip(),
+            "recommended_bgm": [str(x).strip() for x in recommended_bgm if str(x).strip()],
+        })
+    previews.sort(key=lambda item: (int(item.get("rank", 0)), -float(item.get("score", 0))))
+    return previews
+
+
+def editorial_candidates_for_selector(analysis: dict[str, Any]) -> list[dict[str, Any]]:
+    results: list[dict[str, Any]] = []
+    for item in editorial_candidate_previews(analysis):
+        reason = str(item.get("reason", "Gemini viral editorial selection.")).strip()
+        hook = str(item.get("hook_text", "")).strip()
+        clipper_style = str(item.get("clipper_style", "")).strip().lower()
+        style_reason = str(item.get("style_reason", "")).strip()
+        editing_notes = str(item.get("editing_notes", "")).strip()
+        recommended_bgm = item.get("recommended_bgm", [])
+        if not isinstance(recommended_bgm, list):
+            recommended_bgm = []
+        meta_parts: list[str] = []
+        if hook:
+            meta_parts.append(f"hook={hook}")
+        if clipper_style:
+            meta_parts.append(f"clipper_style={clipper_style}")
+        if style_reason:
+            meta_parts.append(f"style_reason={style_reason}")
+        if editing_notes:
+            meta_parts.append(f"editing_notes={editing_notes}")
+        if recommended_bgm:
+            meta_parts.append("recommended_bgm=" + ", ".join(str(x).strip() for x in recommended_bgm if str(x).strip()))
+        if meta_parts:
+            reason = f"{reason} | " + " | ".join(meta_parts)
+        results.append({
+            "highlight_quote": str(item.get("highlight_quote", "")).strip(),
+            "score": float(item.get("score", 0) or 0),
+            "reason": reason,
+            "hook_text": hook,
+            "clipper_style": clipper_style,
+            "style_reason": style_reason,
+            "editing_notes": editing_notes,
+            "recommended_bgm": [str(x).strip() for x in recommended_bgm if str(x).strip()],
+        })
+    return results
