@@ -11,13 +11,10 @@ from pathlib import Path
 from typing import Iterable
 
 
-# Prefer 1440p first; if the download is blocked or unavailable, fall back to 1080p.
-DEFAULT_FORMATS = [
-    "bv*[height=1440]+ba/best[height=1440]",
-    "bv*[height=1080]+ba/best[height=1080]",
-]
+# Preserve source quality: request highest available video and audio. 4K wins when offered.
+DEFAULT_FORMATS = ["bv*+ba/b"]
 DEFAULT_MERGE_FORMAT = "mkv"
-DEFAULT_MIN_HEIGHT = 1080
+DEFAULT_MIN_HEIGHT = 0
 
 
 def run(cmd: list[str]) -> subprocess.CompletedProcess[str]:

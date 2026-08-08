@@ -1,11 +1,13 @@
 {
   "asset_count": 6,
+  "acquisition_policy": "highest available video + audio (bv*+ba/b); prefer 4K when offered; never upscale",
   "assets": [
     {
       "file": "raw/habib-jafar-pemuda-tersesat-biaya-admin.mkv",
       "source_url": "https://www.youtube.com/watch?v=_N1dgEX0Woc",
+      "acquisition": "highest available video + audio (bv*+ba/b); no upscaling",
       "bytes": 5519398,
-      "sha256": "36b815c2a4598cdccbc503e027566ba2f53653730f68a05094f82f39f1f596b2",
+      "sha256": "cdbb6cd173cfd8fef3042609a57f0513006237ab6b6a72c848e80c9d7b41f118",
       "duration_seconds": 30.208,
       "video": {
         "codec": "h264",
@@ -20,8 +22,9 @@
     {
       "file": "raw/habib-jafar-shopeepay-kirim-uang-gratis.mkv",
       "source_url": "https://www.youtube.com/watch?v=wt9cJs-rPdw",
+      "acquisition": "highest available video + audio (bv*+ba/b); no upscaling",
       "bytes": 3240910,
-      "sha256": "a24dcbe6b98ac83f619904f92ff2d107e62578ea2784b3f5c872924498b026f9",
+      "sha256": "9dfb884cc48867a9af60207d7336ecb20e635fc41247c38f4c26f8f78c7f9f41",
       "duration_seconds": 20.148,
       "video": {
         "codec": "av1",
@@ -36,8 +39,9 @@
     {
       "file": "raw/habib-jafar-iklan-shopeepay.mkv",
       "source_url": "https://www.youtube.com/watch?v=zKhMbb9VIqo",
+      "acquisition": "highest available video + audio (bv*+ba/b); no upscaling",
       "bytes": 4075175,
-      "sha256": "d0d392f6d2d8737dcd50f95766e2f7dffd246efcbcc130316aa8231a5677c145",
+      "sha256": "77d4a0cf898ca695281f98159a4f78657f127ca831b23348d3bb8e32bc33bde0",
       "duration_seconds": 30.208,
       "video": {
         "codec": "h264",
@@ -52,8 +56,9 @@
     {
       "file": "raw/habib-jafar-shopeepay-point-exchange.mkv",
       "source_url": "https://www.youtube.com/shorts/XdBCc4ReeMA",
+      "acquisition": "highest available video + audio (bv*+ba/b); no upscaling",
       "bytes": 2999734,
-      "sha256": "9579cb8e0219d072f5e7330323afaa88326228e556439975f6f7d67c32b5cd35",
+      "sha256": "c67049e38bfb59b601b5c6ccfbd300b160097409b162506c923bcd2740a0cd5f",
       "duration_seconds": 15.148,
       "video": {
         "codec": "av1",
@@ -68,8 +73,9 @@
     {
       "file": "raw/habib-jafar-terjun-payung-shopeepay.mkv",
       "source_url": "https://www.youtube.com/shorts/9AMc6ho8xNE",
+      "acquisition": "highest available video + audio (bv*+ba/b); no upscaling",
       "bytes": 1856063,
-      "sha256": "563b1cf70bf8ebfebe5f7ef001c77fb93b0b10fc2445c8fa44c8e76d3e9e93b6",
+      "sha256": "dcfd756f2b8c223d28bee663549e51c856c65b700f5a66dac749a621f2beb551",
       "duration_seconds": 15.108,
       "video": {
         "codec": "av1",
@@ -84,8 +90,9 @@
     {
       "file": "raw/habib-jafar-pantun-hari-ini-shopee.mkv",
       "source_url": "https://www.youtube.com/watch?v=nnd4zYHcFtQ",
+      "acquisition": "highest available video + audio (bv*+ba/b); no upscaling",
       "bytes": 5213195,
-      "sha256": "4e2ed69eb9217d89f71e090f56da468fe754ca42a996948028f12f663b017454",
+      "sha256": "7b8e26e2688438556e939e77e200f55998cc80010ee72fcd7ebfb0eb9154cc3d",
       "duration_seconds": 46.388,
       "video": {
         "codec": "av1",

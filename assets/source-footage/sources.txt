@@ -1,5 +1,6 @@
 # Licensed/reference source list supplied by project owner.
-# Downloaded files are ignored by Git; this list and later manifest document provenance.
+# Downloaded files are ignored by Git; this list and manifest document provenance.
+# Acquisition policy: request highest available video + audio (`bv*+ba/b`); 4K is preferred when source offers it. Never upscale.
 
 Habib Ja'far pemuda tersesat pusing biaya admin (Iklan ShopeePay)
 https://www.youtube.com/watch?v=_N1dgEX0Woc
