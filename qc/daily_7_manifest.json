@@ -1,0 +1,68 @@
+{
+  "count": 7,
+  "outputs": [
+    {
+      "file": "renders/daily_7/01_mati-lampu-token-mahal.mp4",
+      "bytes": 4031804,
+      "duration": 19.967,
+      "video": "h264",
+      "audio": "aac",
+      "resolution": "1080x1920",
+      "result": "pass"
+    },
+    {
+      "file": "renders/daily_7/02_isi-pulsa-kok-mahal.mp4",
+      "bytes": 3459665,
+      "duration": 16.034,
+      "video": "h264",
+      "audio": "aac",
+      "resolution": "1080x1920",
+      "result": "pass"
+    },
+    {
+      "file": "renders/daily_7/03_token-pln-pasti-murah.mp4",
+      "bytes": 2102337,
+      "duration": 9.2,
+      "video": "h264",
+      "audio": "aac",
+      "resolution": "1080x1920",
+      "result": "pass"
+    },
+    {
+      "file": "renders/daily_7/04_pulsa-pln-pasti-murah.mp4",
+      "bytes": 3051738,
+      "duration": 14.08,
+      "video": "h264",
+      "audio": "aac",
+      "resolution": "1080x1920",
+      "result": "pass"
+    },
+    {
+      "file": "renders/daily_7/05_pantun-token-hampir-habis.mp4",
+      "bytes": 9579024,
+      "duration": 22.334,
+      "video": "h264",
+      "audio": "aac",
+      "resolution": "1080x1920",
+      "result": "pass"
+    },
+    {
+      "file": "renders/daily_7/06_pantun-pln-pasti-murah.mp4",
+      "bytes": 7747842,
+      "duration": 18.467,
+      "video": "h264",
+      "audio": "aac",
+      "resolution": "1080x1920",
+      "result": "pass"
+    },
+    {
+      "file": "renders/daily_7/07_pulsa-pln-endcard-payoff.mp4",
+      "bytes": 2524690,
+      "duration": 12.134,
+      "video": "h264",
+      "audio": "aac",
+      "resolution": "1080x1920",
+      "result": "pass"
+    }
+  ]
+}

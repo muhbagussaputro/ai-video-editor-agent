@@ -1,0 +1,14 @@
+{
+  "campaign":"Habib Jafar × ShopeePay — Pulsa & Token PLN Pasti Murah",
+  "platform":"TikTok",
+  "date":"2026-08-09",
+  "videos":[
+    {"rank":1,"id":"mati-lampu-token-mahal","source":"habib-jafar-iklan-shopeepay.mkv","in":1.71,"out":21.65,"hook":"MATI LAMPU, TOKEN\nMALAH MAHAL?","caption":"Mati lampu + token PLN mahal → Pulsa & Token PLN Pasti Murah."},
+    {"rank":2,"id":"isi-pulsa-kok-mahal","source":"habib-jafar-iklan-shopeepay.mkv","in":8.69,"out":24.71,"hook":"ISI PULSA\nKOK MAHAL?","caption":"Problem pulsa mahal, jawaban langsung dari source campaign."},
+    {"rank":3,"id":"token-pln-pasti-murah","source":"habib-jafar-iklan-shopeepay.mkv","in":12.45,"out":21.65,"hook":"TOKEN PLN\nPASTI MURAH","caption":"Versi payoff cepat: izin info lalu Token PLN Pasti Murah."},
+    {"rank":4,"id":"pulsa-pln-pasti-murah","source":"habib-jafar-iklan-shopeepay.mkv","in":15.77,"out":29.85,"hook":"PULSA + TOKEN PLN\nPASTI MURAH","caption":"Versi benefit-first, tanpa setup panjang."},
+    {"rank":5,"id":"pantun-token-hampir-habis","source":"habib-jafar-pantun-hari-ini-shopee.mkv","in":16.90,"out":39.20,"hook":"TOKEN PLN MAU HABIS?\nDENGERIN PANTUN INI","caption":"Habib Jafar pantun, lalu payoff Token PLN Pasti Murah."},
+    {"rank":6,"id":"pantun-pln-pasti-murah","source":"habib-jafar-pantun-hari-ini-shopee.mkv","in":18.34,"out":36.80,"hook":"PANTUN BUAT YANG\nSERING ISI TOKEN","caption":"Versi persona Habib Jafar: pantun ringan dengan payoff PLN."},
+    {"rank":7,"id":"pulsa-pln-endcard-payoff","source":"habib-jafar-iklan-shopeepay.mkv","in":17.73,"out":29.85,"hook":"PULSA DAN TOKEN PLN\nPASTI MURAH","caption":"Versi claim-first dengan product/end-card payoff."}
+  ]
+}
