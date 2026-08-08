@@ -1,0 +1,17 @@
+{
+  "passed": true,
+  "checks": {
+    "exists": true,
+    "ffprobe": true,
+    "video_stream": true,
+    "audio_stream": true,
+    "resolution": true,
+    "duration": true,
+    "start_times": true,
+    "decode": true,
+    "black_frames": true,
+    "audio_not_silent": true
+  },
+  "issues": [],
+  "duration": 10.001
+}

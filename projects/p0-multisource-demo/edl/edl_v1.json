@@ -1,0 +1,90 @@
+{
+  "version": 1,
+  "project_id": "p0-multisource-demo",
+  "target": {
+    "resolution": "1080x1920",
+    "aspect_ratio": "9:16",
+    "fps": 30
+  },
+  "assets": [
+    {
+      "asset_id": "habib-jafar-pemuda-tersesat-biaya-admin",
+      "path": "/home/bismillah/ai-video-editor-agent/assets/source-footage/raw/habib-jafar-pemuda-tersesat-biaya-admin.mkv",
+      "duration": 30.208,
+      "width": 1280,
+      "height": 720,
+      "fps": 25.0,
+      "video_codec": "h264",
+      "audio_codec": "opus",
+      "sha256": "cdbb6cd173cfd8fef3042609a57f0513006237ab6b6a72c848e80c9d7b41f118",
+      "transcript_path": "",
+      "analysis_path": ""
+    },
+    {
+      "asset_id": "habib-jafar-shopeepay-kirim-uang-gratis",
+      "path": "/home/bismillah/ai-video-editor-agent/assets/source-footage/raw/habib-jafar-shopeepay-kirim-uang-gratis.mkv",
+      "duration": 20.148,
+      "width": 720,
+      "height": 1280,
+      "fps": 30.0,
+      "video_codec": "av1",
+      "audio_codec": "opus",
+      "sha256": "9dfb884cc48867a9af60207d7336ecb20e635fc41247c38f4c26f8f78c7f9f41",
+      "transcript_path": "",
+      "analysis_path": ""
+    },
+    {
+      "asset_id": "habib-jafar-iklan-shopeepay",
+      "path": "/home/bismillah/ai-video-editor-agent/assets/source-footage/raw/habib-jafar-iklan-shopeepay.mkv",
+      "duration": 30.208,
+      "width": 1280,
+      "height": 720,
+      "fps": 25.0,
+      "video_codec": "h264",
+      "audio_codec": "opus",
+      "sha256": "77d4a0cf898ca695281f98159a4f78657f127ca831b23348d3bb8e32bc33bde0",
+      "transcript_path": "",
+      "analysis_path": ""
+    }
+  ],
+  "tracks": {
+    "video": [
+      {
+        "id": "hook",
+        "asset_id": "habib-jafar-pemuda-tersesat-biaya-admin",
+        "source_in": 4.84,
+        "source_out": 7.84,
+        "timeline_start": 0.0,
+        "role": "hook",
+        "reason": "visual cost conflict",
+        "transform": {}
+      },
+      {
+        "id": "reaction",
+        "asset_id": "habib-jafar-shopeepay-kirim-uang-gratis",
+        "source_in": 7.13,
+        "source_out": 10.13,
+        "timeline_start": 3.0,
+        "role": "reaction",
+        "reason": "portrait visual reset",
+        "transform": {}
+      },
+      {
+        "id": "payoff",
+        "asset_id": "habib-jafar-iklan-shopeepay",
+        "source_in": 12.45,
+        "source_out": 16.45,
+        "timeline_start": 6.0,
+        "role": "payoff",
+        "reason": "campaign message",
+        "transform": {}
+      }
+    ],
+    "audio": [],
+    "captions": [],
+    "overlays": []
+  },
+  "metadata": {
+    "planner": "deterministic integration demo"
+  }
+}

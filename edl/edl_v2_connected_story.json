@@ -1,0 +1,15 @@
+{
+  "version":2,
+  "replaces":"edl/edl_v1.json",
+  "concept":"Cerita utuh: kebutuhan mendadak, token PLN mahal, pulsa mahal, Habib Jafar memberi solusi, lalu payoff campaign.",
+  "target_duration":26.3,
+  "target":{"platform":"TikTok","aspect_ratio":"9:16","resolution":"1080x1920","video_codec":"h264","audio_codec":"aac"},
+  "hook":{"visual":"Konflik warung/mati lampu langsung dari source.","verbal":"Ya, mati lampu. Wah, harus beli token PLN tapi lumayan mahal.","text":"KALAU TOKEN + PULSA\nSAMA-SAMA MAHAL?"},
+  "timeline":[
+    {"order":1,"source":"assets/source-footage/raw/habib-jafar-iklan-shopeepay.mkv","in":1.71,"out":6.35,"role":"problem_token","reason":"Masalah token PLN jelas."},
+    {"order":2,"source":"assets/source-footage/raw/habib-jafar-iklan-shopeepay.mkv","in":6.83,"out":11.93,"role":"problem_pulsa","reason":"Masalah kedua menaikkan relateability."},
+    {"order":3,"source":"assets/source-footage/raw/habib-jafar-iklan-shopeepay.mkv","in":12.45,"out":21.65,"role":"solution_payoff","reason":"Habib Jafar/source memberi jawaban dan benefit."},
+    {"order":4,"source":"assets/source-footage/raw/habib-jafar-iklan-shopeepay.mkv","in":22.49,"out":29.85,"role":"product_proof_cta","reason":"Product proof dan CTA source menutup cerita."}
+  ],
+  "editing":{"cuts":"Hard cuts only at source sentence boundaries. Audio/video trim every segment together; 120ms audio fade across joins.","layout":"Landscape foreground centered on blurred portrait background. Preserve cast, phone UI, and end card.","captions":"Manual-corrected phrase captions. Hook separate from subtitle. Hashtag only final 3 seconds."}
+}

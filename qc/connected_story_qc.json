@@ -1,0 +1,18 @@
+{
+  "draft": "renders/habib_shopeepay_connected_story.mp4",
+  "edl": "edl/edl_v2_connected_story.json",
+  "technical": {
+    "video": "h264 1080x1920",
+    "audio": "aac stereo",
+    "duration_seconds": 26.334,
+    "video_audio_start_seconds": 0.0,
+    "black_events": 0,
+    "result": "pass"
+  },
+  "editorial": {
+    "overall": 87,
+    "story": "Problem token PLN → problem pulsa → solution → product proof/CTA. All source cuts preserve original order.",
+    "revision": "Removed repeated final benefit overlay. Moved hashtag to conservative safe area.",
+    "known_limit": "One source only; deliberate campaign-fit choice. Do not introduce unrelated free-transfer footage."
+  }
+}

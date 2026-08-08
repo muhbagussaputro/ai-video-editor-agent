@@ -10,7 +10,7 @@ import zipfile
 from pathlib import Path
 from uuid import uuid4
 
-from fastapi import FastAPI, File, Form, HTTPException, UploadFile
+from fastapi import FastAPI, File, Form, HTTPException, UploadFile, Body
 from fastapi.responses import FileResponse, JSONResponse
 from fastapi.staticfiles import StaticFiles
 from redis import Redis
@@ -19,6 +19,7 @@ from shared.router_client import RouterClient, RouterClientError
 from shared.settings import settings
 from shared.viral_editorial import analyze_viral_hooks, editorial_candidate_previews, editorial_candidates_for_selector
 from shared.youtube_transcript import YouTubeTranscriptRateLimited, extract_video_id, fetch_youtube_transcript
+from shared.editor.project import render_project
 
 JOB_QUEUE = "video_jobs"
 APP_ROOT = Path(__file__).resolve().parents[1]
@@ -124,6 +125,22 @@ def startup() -> None:
 @app.get("/health")
 def health() -> dict[str, str]:
     return {"status": "ok"}
+
+
+@app.post("/editor/projects/render")
+def render_editor_project(edl: dict = Body(...)) -> dict[str, object]:
+    """Validated canonical EDL render. Legacy /jobs flow remains unchanged."""
+    try:
+        result = render_project(
+            edl,
+            projects_root=APP_ROOT / "projects",
+            assets_root=APP_ROOT / "assets/source-footage/raw",
+        )
+    except ValueError as exc:
+        raise HTTPException(status_code=422, detail=str(exc)) from exc
+    if not result["passed"]:
+        raise HTTPException(status_code=422, detail=result)
+    return result
 
 
 @app.get("/router/config")
