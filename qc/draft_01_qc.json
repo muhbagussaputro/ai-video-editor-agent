@@ -1,0 +1,42 @@
+{
+  "draft": "renders/draft_01.mp4",
+  "edl": "edl/edl_v1.json",
+  "technical": {
+    "playable": true,
+    "video": "h264 1080x1920 30fps",
+    "audio": "aac stereo",
+    "duration_seconds": 19.967,
+    "video_start_seconds": 0.0,
+    "audio_start_seconds": 0.0,
+    "black_events": 0,
+    "audio_mean_db": -16.9,
+    "audio_peak_db": -2.7,
+    "subtitle_sidecar": "renders/draft_01.ass",
+    "result": "pass",
+    "font_runtime": "DejaVu Sans Bold explicitly selected after host lacked Montserrat; no font fallback in final render log."
+  },
+  "editorial": {
+    "hook": 88,
+    "first_2_seconds": 89,
+    "topic": 90,
+    "pacing": 86,
+    "story": 87,
+    "clarity": 90,
+    "visual": 84,
+    "audio": 87,
+    "caption": 88,
+    "retention": 85,
+    "payoff": 91,
+    "campaign_fit": 95,
+    "transformation": 85,
+    "ending": 88,
+    "overall": 88,
+    "result": "pass after one layout revision",
+    "revision": "QC pass 1 found lower caption/hashtag too close to TikTok controls. Moved both into conservative safe area; rerendered and sampled final payoff frame. Final render explicitly uses available DejaVu Sans Bold; no font fallback.",
+    "remaining_limitations": [
+      "Landscape master is intentionally framed on blurred portrait background to preserve all cast and source brand UI.",
+      "No music/SFX added; dialogue-first rough cut.",
+      "Manual transcript corrections applied to captions where local Whisper misrecognized brand/product words."
+    ]
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "version":1,
+  "project":"habib-jafar-shopeepay-pulsa-token-pln",
+  "concept":"Mati lampu dan pulsa mahal adalah masalah kecil yang relate; Habib Jafar/source campaign memberi payoff Pulsa & Token PLN Pasti Murah.",
+  "target_audience":"Pengguna TikTok Indonesia yang rutin membeli pulsa atau token PLN.",
+  "core_emotion":"Relate lalu lega.",
+  "target_duration":19.94,
+  "target":{"platform":"TikTok","aspect_ratio":"9:16","resolution":"1080x1920","video_codec":"h264","audio_codec":"aac"},
+  "hook":{"visual":"Reaksi masalah mati lampu dan pelanggan bingung, langsung terlihat tanpa intro.","verbal":"Ya, mati lampu. Wah, harus beli token PLN tapi lumayan mahal.","text":"MATI LAMPU, TOKEN MALAH MAHAL?"},
+  "open_loop":"Apakah ada solusi untuk token PLN dan pulsa yang terasa mahal?",
+  "payoff":"Pulsa dan Token PLN Pasti Murah.",
+  "timeline":[
+    {"order":1,"source":"assets/source-footage/raw/habib-jafar-iklan-shopeepay.mkv","in":1.71,"out":21.65,"role":"hook_to_payoff","reason":"Complete problem-to-solution arc. Core campaign fit direct."}
+  ],
+  "visual_treatment":{"layout":"Landscape foreground fit on blurred portrait background. No blind center crop; preserves cast and brand UI.","pacing":"No intro; first spoken problem begins at 0s. Clean pauses retained only for meaning.","text_hook_duration":2.4,"captions":"Manual-corrected local Whisper timing, phrase chunks, lower safe area.","brand":"No hard-sell hook. Campaign payoff appears from source and corrected caption; mandatory hashtag is a restrained end layer."},
+  "rejected_sources":[
+    {"source":"habib-jafar-pemuda-tersesat-biaya-admin.mkv","reason":"Transfer-fee feature; indirect to Pulsa/Token PLN."},
+    {"source":"habib-jafar-shopeepay-kirim-uang-gratis.mkv","reason":"Transfer-fee feature; indirect to Pulsa/Token PLN."},
+    {"source":"habib-jafar-shopeepay-point-exchange.mkv","reason":"Transfer-fee feature; indirect to Pulsa/Token PLN."},
+    {"source":"habib-jafar-terjun-payung-shopeepay.mkv","reason":"Strong visual but unrelated feature and no usable transcript."}
+  ]
+}

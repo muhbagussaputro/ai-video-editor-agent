@@ -1,0 +1,14 @@
+{
+  "top_viral_moments": [
+    {"rank":1,"id":"pln-problem-solution","timestamp":"00:01.71–00:21.65","source":"habib-jafar-iklan-shopeepay.mkv","statement_scene":"Mati lampu, token PLN terasa mahal, kebutuhan isi pulsa, lalu solusi Pulsa & Token PLN Pasti Murah.","why_interesting":"Masalah bulanan langsung, jelas, dan dibayar oleh payoff campaign.","campaign_connection":"Direct","viral_score":8.0,"potential_first_frame":"Reaksi masalah mati lampu / pelanggan bingung.","best_hook":"Mati lampu, token PLN malah mahal?","suggested_payoff":"Pulsa dan Token PLN Pasti Murah."},
+    {"rank":2,"id":"pln-pantun-payoff","timestamp":"00:18.34–00:39.20","source":"habib-jafar-pantun-hari-ini-shopee.mkv","statement_scene":"Habib Jafar memberi pantun, berujung token PLN hampir habis.","why_interesting":"Persona Habib Jafar dan format pantun membuat packaging ringan.","campaign_connection":"Direct","viral_score":7.4,"potential_first_frame":"UI chat atau ekspresi Habib Jafar.","best_hook":"Pantun buat yang tokennya hampir habis.","suggested_payoff":"Token PLN Pasti Murah."},
+    {"rank":3,"id":"pln-statement-short","timestamp":"00:08.69–00:21.65","source":"habib-jafar-iklan-shopeepay.mkv","statement_scene":"Isi pulsa terasa mahal lalu muncul jawaban langsung.","why_interesting":"Fast, sangat mudah dipahami, campaign fit maksimal.","campaign_connection":"Direct","viral_score":7.6,"potential_first_frame":"Ekspresi dan HP pelanggan.","best_hook":"Isi pulsa kok mahal?","suggested_payoff":"Pulsa dan Token PLN Pasti Murah."}
+  ],
+  "selected_concept": {
+    "id":"pln-problem-solution",
+    "target_audience":"TikTok users Indonesia yang rutin beli pulsa atau token PLN; anak kos, mahasiswa, keluarga, dan pekerja muda.",
+    "thesis":"Masalah kecil yang sangat relate: listrik/pulsa dibutuhkan sekarang, tapi harga terasa mahal; payoff adalah pesan campaign yang nyata dan singkat.",
+    "reason":"Moment Strength × Campaign Fit paling tinggi. Tidak memaksa footage transfer gratis admin masuk main story."
+  },
+  "content_score": {"hook":9,"topic":10,"curiosity":8,"relatability":10,"retention":8,"shareability":7,"campaign_fit":10,"transformation":8,"total":70,"decision":"PRODUCE FIRST"}
+}
