@@ -8,6 +8,8 @@ config/*.env.*
 *.key
 
 # Job metadata, cached source/transcripts, and generated media
+assets/source-footage/raw/
+assets/source-footage/download-report.json
 -o/
 .rank-batch-*.json
 .tmp_style_ass/
