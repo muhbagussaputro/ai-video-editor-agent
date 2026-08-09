@@ -1,0 +1,7 @@
+{
+  "caption_sync": "Whisper segment timestamps mapped into concatenated timeline: source A minus 1.71; source B minus 18.34 plus 19.94.",
+  "caption_events": 19,
+  "manual_text_corrections": "Only ASR spelling/brand surface forms corrected; event timing remains native Whisper segment timing.",
+  "output": "renders/habib_shopeepay_long_story.mp4",
+  "result": "pass"
+}
