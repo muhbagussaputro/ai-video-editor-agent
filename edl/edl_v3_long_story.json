@@ -1,0 +1,11 @@
+{
+  "version": 3,
+  "project_id": "habib-jafar-shopeepay-long-story",
+  "target": {"resolution": "1080x1920", "aspect_ratio": "9:16", "fps": 30},
+  "story": "Masalah token PLN dan pulsa mahal, solusi campaign, lalu Habib Jafar membawa visual reset lewat pantun token PLN.",
+  "timeline": [
+    {"source": "habib-jafar-iklan-shopeepay.mkv", "in": 1.71, "out": 21.65, "role": "problem_to_solution"},
+    {"source": "habib-jafar-pantun-hari-ini-shopee.mkv", "in": 18.34, "out": 39.20, "role": "personality_reset_to_payoff"}
+  ],
+  "duration_seconds": 40.80
+}

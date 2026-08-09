@@ -1,0 +1,23 @@
+{
+  "video": "renders/habib_shopeepay_long_story.mp4",
+  "duration": 40.834,
+  "technical": {
+    "h264_aac": true,
+    "resolution": "1080x1920",
+    "video_audio_start": 0.0,
+    "decode": true
+  },
+  "edit": {
+    "sources": [
+      "habib-jafar-iklan-shopeepay.mkv",
+      "habib-jafar-pantun-hari-ini-shopee.mkv"
+    ],
+    "structure": [
+      "token/pulsa problem",
+      "campaign solution",
+      "Habib Jafar pantun visual reset",
+      "token PLN payoff"
+    ],
+    "cuts": "semantic boundaries; no source order manipulation"
+  }
+}
